@@ -4,6 +4,13 @@ const DrawingCanvas = ({ socket, roomId, canvasRef, color, strokeWidth }) => {
   const isDrawing = useRef(false);
   const lastPoint = useRef({ x: 0, y: 0 });
 
+  // Join the room on mount
+  useEffect(() => {
+    if (socket && roomId) {
+      socket.emit("join-room", { roomId });
+    }
+  }, [socket, roomId]);
+
   const clearCanvas = useCallback(() => {
     const ctx = canvasRef.current.getContext("2d");
     ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
@@ -39,7 +46,6 @@ const DrawingCanvas = ({ socket, roomId, canvasRef, color, strokeWidth }) => {
     canvas.height = window.innerHeight;
     ctx.lineCap = "round";
 
-    // ✅ FIXED: Adjust mouse position to canvas offset
     const getMousePos = (e) => {
       const rect = canvas.getBoundingClientRect();
       return {
@@ -71,6 +77,7 @@ const DrawingCanvas = ({ socket, roomId, canvasRef, color, strokeWidth }) => {
         roomId,
         x: currentPoint.x,
         y: currentPoint.y,
+        userId: socket.id,
       });
     };
 
@@ -92,6 +99,7 @@ const DrawingCanvas = ({ socket, roomId, canvasRef, color, strokeWidth }) => {
     });
 
     socket.on("load-drawing-data", (data) => {
+      clearCanvas(); // Clear before redrawing strokes
       data.forEach((cmd) => {
         if (cmd.type === "stroke") {
           drawLine({ ...cmd.data, emit: false });
@@ -117,9 +125,9 @@ const DrawingCanvas = ({ socket, roomId, canvasRef, color, strokeWidth }) => {
       ref={canvasRef}
       style={{
         position: "absolute",
-        top: "50px", // Leave room for toolbar
+        top: "50px",
         left: 0,
-        background: "#e3f2fd", // ✅ Light blue background
+        background: "#e3f2fd",
         zIndex: 1,
       }}
     />
