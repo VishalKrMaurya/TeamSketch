@@ -1,0 +1,6 @@
+# Ignore all node_modules in any subdirectory
+**/node_modules/
+
+# Optional: also ignore environment and log files
+.env
+*.log

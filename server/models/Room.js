@@ -1,0 +1,14 @@
+const mongoose = require("mongoose");
+
+const roomSchema = new mongoose.Schema({
+  roomId: { type: String, required: true, unique: true },
+  drawingData: [
+    {
+      type: { type: String }, // 'stroke' or 'clear'
+      data: Object,
+      timestamp: { type: Date, default: Date.now }
+    }
+  ]
+});
+
+module.exports = mongoose.model("Room", roomSchema);

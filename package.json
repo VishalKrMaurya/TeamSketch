@@ -1,0 +1,21 @@
+{
+  "name": "cosketch-main",
+  "version": "1.0.0",
+  "description": "<div id=\"top\"></div>",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd server && nodemon server.js",
+    "client": "cd client && npm start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^9.2.0"
+  },
+  "dependencies": {
+    "node-modules": "^1.0.1"
+  }
+}
