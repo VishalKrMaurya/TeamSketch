@@ -1,4 +1,4 @@
-# CoSketch - Collaborative Whiteboard
+# CoSketch
 
 ## Setup Instructions
 ```bash

@@ -72,7 +72,15 @@ function initSocket(server) {
       }
     });
 
+    socket.on("cursor-move", ({ roomId, x, y, userId }) => {
+      socket.to(roomId).emit("update-cursor", { userId: socket.id, x, y });
+    });
+
     socket.on("disconnect", () => {
+      // Notify others to remove this user's cursor
+      if (socket.roomId) {
+        socket.to(socket.roomId).emit("remove-user", socket.id);
+      }
       console.log("❌ Client disconnected:", socket.id);
     });
   });

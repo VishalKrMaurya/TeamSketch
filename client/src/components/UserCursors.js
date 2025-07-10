@@ -1,10 +1,6 @@
-// client/src/components/UserCursors.js
 import React, { useEffect, useState } from "react";
-import { io } from "socket.io-client";
 
-const socket = io("http://localhost:5000");
-
-const UserCursors = ({ roomId, selfId }) => {
+const UserCursors = ({ socket, roomId, selfId }) => {
   const [cursors, setCursors] = useState({});
 
   useEffect(() => {
@@ -31,7 +27,7 @@ const UserCursors = ({ roomId, selfId }) => {
       socket.off("update-cursor", handleCursor);
       socket.off("remove-user", removeCursor);
     };
-  }, [selfId]);
+  }, [selfId, socket]);
 
   return (
     <>
